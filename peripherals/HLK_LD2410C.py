@@ -26,25 +26,35 @@ class LD2410C:
 
     def init(self):
         self.__ser.flush()
-        # do radar config here
+        # TODO: radar config here
 
+    # TODO: check response
     def enable_config(self) -> bool:
         return self.config_transceive(0x00FF, 0x0001)
 
+    # TODO: check response
     def disable_config(self) -> bool:
-        pass
+        return self.config_transceive(0x00FE, None)
 
+    # TODO: check response
     def config_reset(self) -> bool:
-        return False
+        return self.config_transceive(0x00A2, None)
 
+    # TODO: check response
     def restart(self) -> bool:
         self.enable_config()
         sleep(0.02)
         return self.config_transceive(0x00A3, None)
 
     # automatic background noise detection and sensitivity configuration
-    def auto_sensitivity(self) -> bool:
-        return False
+    def auto_sensitivity(self, measurement_duration) -> bool:
+        if measurement_duration < 0:
+            raise ValueError("Measurement duration must be non-negative")
+
+        if measurement_duration > 0xFFFF:
+            raise ValueError("Measurement duration must be less than 65536")
+
+        return self.config_transceive(0x000B, measurement_duration)
 
     # STRUCTURE
     # | HEADER | DATA_LENGTH | DATA: CMD WORD | DATA: CMD VALUE | FOOTER |
@@ -55,9 +65,13 @@ class LD2410C:
 
         # convert integer input to bytes (-> LSB first)
         cmdwrd = cmdwrd.to_bytes(2, byteorder="little")
+
+        cmdval_byte_length = cmdval.bit_length() // 8 + (
+            1 if cmdval.bit_length() % 8 != 0 else 0
+        )
         cmdval = (
-            cmdval.to_bytes(2, byteorder="little") if cmdval else None
-        )  # TODO: cmdval can be bigger than 2 bytes
+            cmdval.to_bytes(cmdval_byte_length, byteorder="little") if cmdval else None
+        )
 
         # calculate length of data intra-frame
         data_length = len(cmdwrd) + (len(cmdval) if cmdval else 0)
@@ -76,12 +90,8 @@ class LD2410C:
         print(f"Sending config frame: {cmd_packet.hex()}")
         self.__ser.write(cmd_packet)
 
-        # receive ACK
+        # receive ACK; TODO: implement ACK handling
         print(f"Received: {self.__ser.read(16).hex()}")
         self.__ser.flush()
 
         return True
-
-    # RM
-    def read_chunk(self, size: int) -> bytes:
-        return self.__ser.read(size)

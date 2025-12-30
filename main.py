@@ -8,6 +8,4 @@ radar.init()
 radar.restart()
 
 while True:
-    # print(radar.read_chunk(512))
-    # print("\n")
     pass
