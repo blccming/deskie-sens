@@ -3,17 +3,17 @@ from time import sleep
 
 import serial
 
+TARGET_STATE_NO_TARGET = 0x00
+TARGET_STATE_MOVING_TARGET = 0x01
+TARGET_STATE_STATIONARY_TARGET = 0x02
+TARGET_STATE_MOVING_AND_STATIONARY_TARGET = 0x03
+TARGET_STATE_BACKGROUND_NOISE_DETECTION = 0x04
+TARGET_STATE_BACKGROUND_NOISE_DETECTION_SUCCESS = 0x05
+TARGET_STATE_BACKGROUND_NOISE_DETECTION_FAIL = 0x06
+TARGET_STATE_UNDEFINED = 0xFF
+
 
 class LD2410C:
-    TARGET_STATE_NO_TARGET = 0x00
-    TARGET_STATE_MOVING_TARGET = 0x01
-    TARGET_STATE_STATIONARY_TARGET = 0x02
-    TARGET_STATE_MOVING_AND_STATIONARY_TARGET = 0x03
-    TARGET_STATE_BACKGROUND_NOISE_DETECTION = 0x04
-    TARGET_STATE_BACKGROUND_NOISE_DETECTION_SUCCESS = 0x05
-    TARGET_STATE_BACKGROUND_NOISE_DETECTION_FAIL = 0x06
-    TARGET_STATE_UNDEFINED = 0xFF
-
     def __init__(self):
         self.__ser = serial.Serial(
             port="/dev/ttyS0",
@@ -41,6 +41,12 @@ class LD2410C:
     def disable_config(self) -> bool:
         return self.config_transceive(0x00FE, None) == "0400fe010000"
 
+    def set_bluetooth(self, enable: bool) -> bool:
+        return (
+            self.config_transceive(0x00A4, (0x0100 if enable else 0x0000))
+            == "0400a4010000"
+        )
+
     def factory_reset(self) -> bool:
         return self.config_transceive(0x00A2, None) == "0400a2010000"
 
@@ -67,14 +73,15 @@ class LD2410C:
         # convert integer input to bytes (-> LSB first)
         cmdwrd = cmdwrd.to_bytes(2, byteorder="little")
 
-        if cmdval:
+        if cmdval is not None:
             cmdval_byte_length = cmdval.bit_length() // 8 + (
                 1 if cmdval.bit_length() % 8 != 0 else 0
             )
+            cmdval_byte_length = max(cmdval_byte_length, 2)
             cmdval = cmdval.to_bytes(cmdval_byte_length, byteorder="little")
 
         # calculate length of data intra-frame
-        data_length = len(cmdwrd) + (len(cmdval) if cmdval else 0)
+        data_length = len(cmdwrd) + (cmdval_byte_length if cmdval is not None else 0)
         data_length = data_length.to_bytes(2, byteorder="little")
 
         # construct command
@@ -82,7 +89,7 @@ class LD2410C:
         cmd_packet.extend(HEADER)
         cmd_packet.extend(data_length)
         cmd_packet.extend(cmdwrd)
-        if cmdval:
+        if cmdval is not None:
             cmd_packet.extend(cmdval)
         cmd_packet.extend(FOOTER)
 
