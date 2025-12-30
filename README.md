@@ -1,4 +1,12 @@
-raspi-config
-- enable serial port (enable_uart=1 in config.txt)
-- update everything
-- install python3-serial
+### deskie-sens
+This project aims to create a Raspberry Pi HAT and supporting software to extend the Raspberry Pi's functionality. I aim to implement a variety of sensors and other peripherals that the data they provide can be accessed via an API and Home Assistant for home automation. I plan to use the Pi with its HAT as a desk clock to add to its sensor-bearing functionality.
+
+#### Current state of development
+- Evaluating hardware options
+- Designing software architecture
+- Implementing sensor drivers
+
+#### Setup steps for development at this stage
+- In `raspi-config` enable serial port and disable serial login shell (or enable_uart=1 in config.txt)
+- Update && upgrade raspberry pi
+- Install python3-serial
