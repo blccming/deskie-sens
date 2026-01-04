@@ -1,9 +1,8 @@
 # from gpiozero import LED
-
 from peripherals.HLK_LD2410C import LD2410C
 
 radar = LD2410C()
 radar.init()
 
 while True:
-    pass
+    radar.update()
