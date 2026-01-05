@@ -1,14 +1,13 @@
 ## TODO
 
 MQTT
-- use MQTT for config -> executing sensor reset etc.
+- use MQTT for config -> initiating sensor reset etc.
 
 Logging
 - add log levels
 
 Docker
 - add docker deployment option
-- add mosquitto container for testing / no longer being reliant on mosquitto test server
 
 LD2410C
 - investigate dropouts in radar read

@@ -20,8 +20,8 @@ class StateMachine:
                     self.__state = 1
                 sleep(0.1)
             case 1:  # update
-                r.update()
-                self.__state = 2
+                if r.update():
+                    self.__state = 2
             case 2:  # publish
                 m.publish(
                     "/radar",

@@ -28,25 +28,25 @@ class LD2410C:
     def init(self) -> bool:
         self.__ser.flush()
 
-        print("enabling config")
+        print("Enabling config")
         if not self.__enable_config():
             return False
 
-        print("factory rest")
+        print("Factory rest")
         if not self.factory_reset():
             return False
 
-        print("setting ble")
+        print("Setting ble")
         if not self.set_bluetooth(False):
             return False
 
-        print("enabling restarting")
+        print("Restarting")
         if not self.restart():
             return False
 
         time.sleep(0.5)
 
-        print("disabling config")
+        print("Disabling config")
         if not self.__disable_config():
             pass  # radar doesn't seem to answer, so return is False
 
@@ -154,7 +154,6 @@ class LD2410C:
 
     def update(self) -> bool:
         data_frame = self.__read_target_state()
-        print(data_frame)
 
         if data_frame is None:
             return False
@@ -206,9 +205,6 @@ class LD2410C:
     """
     MAKE DATA AVAILABLE TO STATE MACHINE
     """
-
-    def get_last_updated(self) -> str:
-        return str(self.__last_update_human_readable)
 
     def get_json(self) -> str:
         data = {}
