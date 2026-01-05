@@ -47,8 +47,7 @@ class LD2410C:
 
         print("disabling config")
         if not self.__disable_config():
-            # return False
-            pass
+            pass  # radar doesn't seem to answer, so return is False
 
         return True
 
@@ -72,9 +71,7 @@ class LD2410C:
         if measurement_duration > 0xFFFF:
             return False
 
-        return (
-            self.__config_transceive(0x000B, measurement_duration) == "04000b010000"
-        )  # TODO: test this
+        return self.__config_transceive(0x000B, measurement_duration) == "04000b010000"
 
     def __enable_config(self) -> bool:
         return self.__config_transceive(0x00FF, 0x0001) == "0800ff01000001004000"
@@ -154,7 +151,6 @@ class LD2410C:
         actual_bytes = bytes.fromhex(byte_str)
         return int.from_bytes(actual_bytes, "little")
 
-    # TODO: investigate dropouts
     def update(self) -> bool:
         data_frame = self.__read_target_state()
         print(data_frame)
