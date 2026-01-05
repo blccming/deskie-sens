@@ -1,3 +1,4 @@
+import json
 import re
 import time
 
@@ -172,7 +173,7 @@ class LD2410C:
         # TODO: remove later, debugging output
         print(
             f"--- Parsed frame ---\n"
-            f"State                 : 0x{data_frame[:2]}    → {self.__t_state_str(self.__t_state)}\n"
+            f"State                 : 0x{data_frame[:2]}    → {self.__t_state_str()}\n"
             f"Moving distance       : 0x{data_frame[2:6]}   → {self.__t_moving_distance}\n"
             f"Moving energy         : 0x{data_frame[6:8]}   → {self.__t_moving_energy}\n"
             f"Stationary distance   : 0x{data_frame[8:12]}  → {self.__t_stationary_distance}\n"
@@ -183,8 +184,8 @@ class LD2410C:
 
         return True
 
-    def __t_state_str(self, state: int) -> str:
-        match state:
+    def __t_state_str(self) -> str:
+        match self.__t_state:
             case 0x00:
                 return "None"
             case 0x01:
@@ -206,8 +207,28 @@ class LD2410C:
     MAKE DATA AVAILABLE TO STATE MACHINE
     """
 
-    def get_state(self) -> str:
-        return self.__t_state_str(self.__t_state)
-
     def get_last_updated(self) -> str:
         return str(self.__last_update_human_readable)
+
+    def get_data_json(self) -> str:
+        data = {}
+
+        data["state"] = self.__t_state_str()
+        data["detection_distance"] = self.__t_detection_distance
+
+        data["moving"] = {
+            "state": self.__t_state == 0x01 or self.__t_state == 0x03,
+            "distance": self.__t_moving_distance,
+            "energy": self.__t_moving_energy,
+        }
+
+        data["stationary"] = {
+            "state": self.__t_state == 0x02 or self.__t_state == 0x03,
+            "distance": self.__t_stationary_distance,
+            "energy": self.__t_stationary_energy,
+        }
+
+        data["last_update"] = self.__last_update_human_readable
+        data["last_update_unix"] = self.__last_update_unix
+
+        return json.dumps(data, indent=4)

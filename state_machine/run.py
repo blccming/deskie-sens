@@ -23,7 +23,7 @@ class StateMachine:
                 r.update()
                 m.publish(
                     "ksdm2/LD2410C/test",
-                    f"{r.get_state()}; updated at {r.get_last_updated()}",
+                    r.get_data_json(),
                 )
             case _:
                 pass
