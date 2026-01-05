@@ -1,7 +1,14 @@
+from enum import IntEnum
 from time import sleep
 
 from comms.mqtt import MQTT
 from peripherals.HLK_LD2410C import LD2410C
+
+
+class States(IntEnum):
+    INIT = 0
+    MEASURE = 1
+    PUBLISH = 2
 
 
 class StateMachine:
@@ -15,18 +22,18 @@ class StateMachine:
         m = self.__mqtt
 
         match self.__state:
-            case 0:  # init
+            case States.INIT:
                 if r.init():
-                    self.__state = 1
+                    self.__state = States.MEASURE
                 sleep(0.1)
-            case 1:  # update
+            case States.MEASURE:
                 if r.update():
-                    self.__state = 2
-            case 2:  # publish
+                    self.__state = States.PUBLISH
+            case States.PUBLISH:
                 m.publish(
                     "/radar",
                     r.get_json(),
                 )
-                self.__state = 1
+                self.__state = States.MEASURE
             case _:
                 pass
