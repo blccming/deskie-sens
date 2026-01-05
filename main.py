@@ -1,8 +1,6 @@
-# from gpiozero import LED
-from peripherals.HLK_LD2410C import LD2410C
+from state_machine.run import StateMachine
 
-radar = LD2410C()
-radar.init()
+sm = StateMachine()
 
 while True:
-    radar.update()
+    sm.run()

@@ -9,4 +9,4 @@ This project aims to create a Raspberry Pi HAT and supporting software to extend
 #### Setup steps for development at this stage
 - In `raspi-config` enable serial port and disable serial login shell (or enable_uart=1 in config.txt)
 - Update && upgrade raspberry pi
-- Install python3-serial
+- Install python3-serial, python3-paho-mqtt

@@ -9,7 +9,7 @@ class LD2410C:
         self.__ser = serial.Serial(
             port="/dev/ttyS0",
             baudrate=256000,
-            timeout=0.1,
+            timeout=0.5,
             bytesize=serial.EIGHTBITS,
             stopbits=serial.STOPBITS_ONE,
             parity=serial.PARITY_NONE,
@@ -22,18 +22,33 @@ class LD2410C:
         self.__t_stationary_energy: int = -1
         self.__t_detection_distance: int = -1
         self.__last_update_unix: float = -1.0
+        self.__last_update_human_readable: str = ""
 
     def init(self) -> bool:
         self.__ser.flush()
 
+        print("enabling config")
         if not self.__enable_config():
             return False
 
+        print("factory rest")
+        if not self.factory_reset():
+            return False
+
+        print("setting ble")
         if not self.set_bluetooth(False):
             return False
 
-        if not self.__disable_config():
+        print("enabling restarting")
+        if not self.restart():
             return False
+
+        time.sleep(0.5)
+
+        print("disabling config")
+        if not self.__disable_config():
+            # return False
+            pass
 
         return True
 
@@ -52,10 +67,10 @@ class LD2410C:
     # automatic background noise detection and sensitivity configuration
     def auto_sensitivity(self, measurement_duration) -> bool:
         if measurement_duration < 0:
-            raise ValueError("Measurement duration must be non-negative")
+            return False
 
         if measurement_duration > 0xFFFF:
-            raise ValueError("Measurement duration must be less than 65536")
+            return False
 
         return (
             self.__config_transceive(0x000B, measurement_duration) == "04000b010000"
@@ -111,7 +126,7 @@ class LD2410C:
 
         # receive ACK
         answer = self.__ser.read_until(b"\x04\x03\x02\x01").hex()
-        print(f"Received: {answer}")
+        print(f"Received: {answer}\n")
 
         # get clean answer to return
         answer_regex = re.search(r"(?<=fdfcfbfa).*?(?=04030201)", answer)
@@ -156,6 +171,7 @@ class LD2410C:
         self.__t_detection_distance = self.__bytes_parser(data_frame[14:18])
 
         self.__last_update_unix = time.time()
+        self.__last_update_human_readable = time.ctime()
 
         # TODO: remove later, debugging output
         print(
@@ -189,3 +205,13 @@ class LD2410C:
                 return "Noise detection failed"
             case _:
                 return "Unknown"
+
+    """
+    MAKE DATA AVAILABLE TO STATE MACHINE
+    """
+
+    def get_state(self) -> str:
+        return self.__t_state_str(self.__t_state)
+
+    def get_last_updated(self) -> str:
+        return str(self.__last_update_human_readable)
