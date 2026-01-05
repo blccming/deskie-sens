@@ -15,15 +15,18 @@ class StateMachine:
         m = self.__mqtt
 
         match self.__state:
-            case 0:
+            case 0:  # init
                 if r.init():
                     self.__state = 1
                 sleep(0.1)
-            case 1:
+            case 1:  # update
                 r.update()
+                self.__state = 2
+            case 2:  # publish
                 m.publish(
                     "ksdm2/LD2410C/test",
                     r.get_data_json(),
                 )
+                self.__state = 1
             case _:
                 pass
