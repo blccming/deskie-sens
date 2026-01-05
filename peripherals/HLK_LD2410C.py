@@ -210,7 +210,7 @@ class LD2410C:
     def get_last_updated(self) -> str:
         return str(self.__last_update_human_readable)
 
-    def get_data_json(self) -> str:
+    def get_json(self) -> str:
         data = {}
 
         data["state"] = self.__t_state_str()

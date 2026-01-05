@@ -22,6 +22,9 @@ SI1145 and SCD40
 Waveshare Pico-8SEG-LED
 - initial test implementation
 
+Config
+- add config file
+
 Home Assistant
 - add home assistant support via MQTT (and device configuration via HTTP?)
 - add home assistant templates to repo for adding device

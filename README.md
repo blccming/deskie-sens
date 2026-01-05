@@ -8,5 +8,10 @@ This project aims to create a Raspberry Pi HAT and supporting software to extend
 
 #### Setup steps for development at this stage
 - In `raspi-config` enable serial port and disable serial login shell (or enable_uart=1 in config.txt)
-- Update && upgrade raspberry pi
-- Install python3-serial, python3-paho-mqtt
+- Execute these commands
+```sh
+sudo apt update && apt upgrade -y
+sudo apt install python3-serial python3-paho-mqtt
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+```
