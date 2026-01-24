@@ -1,2 +1,3 @@
 aio-ld2410
 adafruit-circuitpython-scd4x
+adafruit-circuitpython-si1145

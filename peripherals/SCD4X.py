@@ -1,5 +1,6 @@
 import asyncio
 import json
+from datetime import datetime
 
 import adafruit_scd4x
 import board
@@ -25,6 +26,7 @@ class SCD4X:
             "co2_ppm": co2,
             "temperature_C": round(temp, 1),
             "humidity_%": round(hum, 1),
+            "last_updated": datetime.now().isoformat(),
         }
 
         return json.dumps(report, indent=4)
