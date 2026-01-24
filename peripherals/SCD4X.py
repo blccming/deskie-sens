@@ -1,3 +1,6 @@
+import asyncio
+import json
+
 import adafruit_scd4x
 import board
 
@@ -10,9 +13,18 @@ class SCD4X:
     def configure(self):
         self.scd.start_periodic_measurement()
 
-    def get_json_report(self) -> str:
-        if self.scd.data_ready:
-            print("CO2: %d ppm" % self.scd.CO2)
-            print("Temperature: %0.1f *C" % self.scd.temperature)
-            print("Humidity: %0.1f %%" % self.scd.relative_humidity)
-            print()
+    async def get_json_report(self) -> str:
+        while not self.scd.data_ready:
+            await asyncio.sleep(0.05)
+
+        co2 = await asyncio.to_thread(lambda: self.scd.CO2)
+        temp = await asyncio.to_thread(lambda: self.scd.temperature)
+        hum = await asyncio.to_thread(lambda: self.scd.relative_humidity)
+
+        report = {
+            "co2_ppm": co2,
+            "temperature_C": round(temp, 1),
+            "humidity_%": round(hum, 1),
+        }
+
+        return json.dumps(report, indent=4)
