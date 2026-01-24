@@ -8,6 +8,7 @@ This project aims to create a Raspberry Pi HAT and supporting software to extend
 
 #### Setup steps for development at this stage
 - In `raspi-config` enable serial port and disable serial login shell (or enable_uart=1 in config.txt)
+- In `raspi-config` enable I2C
 - Execute these commands
 ```sh
 sudo apt update && apt upgrade -y

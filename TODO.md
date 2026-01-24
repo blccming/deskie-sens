@@ -9,14 +9,9 @@ Logging
 Docker
 - add docker deployment option
 
-LD2410C
-- investigate dropouts in radar read
-- test automatic calibration, even though stock calibration seems just fine
-
 SI1145 and SCD40
 - initial test implementation
 - evaluate sensor
-- I2C HAL / parent class?
 
 Waveshare Pico-8SEG-LED
 - initial test implementation

@@ -1,8 +1,7 @@
-import asyncio
 import json
 from datetime import datetime
 
-from aio_ld2410 import LD2410, ReportBasicStatus, TargetStatus
+from aio_ld2410 import LD2410
 
 
 class HLK_LD2410C:
