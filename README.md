@@ -11,7 +11,8 @@ This project aims to create a Raspberry Pi HAT and supporting software to extend
 - Execute these commands
 ```sh
 sudo apt update && apt upgrade -y
-sudo apt install python3-serial python3-paho-mqtt
+sudo apt install python3-serial python3-paho-mqtt python3-pip
+pip install -r requirements.txt --break-system-packages
 curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
 ```

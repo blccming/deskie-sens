@@ -1,6 +1,8 @@
+import asyncio
+
 from state_machine.run import StateMachine
 
 sm = StateMachine()
 
-while True:
-    sm.run()
+if __name__ == "__main__":
+    asyncio.run(sm.run())
