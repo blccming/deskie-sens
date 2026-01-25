@@ -91,6 +91,7 @@ mqtt:
       - 01KFTQ6W1XQ4B36PYAKHS4KSP6
       model: Deskie-Sens
       name: Presence
+    entity_category: diagnostic
     name: Presence state
     qos: 0.0
     state_class: measurement
@@ -167,4 +168,32 @@ mqtt:
     state_topic: deskie-sens/presence
     unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_b4428ac616124cda89586b0aff852807
     value_template: '{{ value_json.static.energy }}'
+- binary_sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    device_class: motion
+    name: Moving
+    payload_off: 'False'
+    payload_on: 'True'
+    qos: 0.0
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_d9310ef36d804ee39d36a7de1af0d032
+    value_template: '{{ value_json.moving.state }}'
+- binary_sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    device_class: occupancy
+    name: Occupancy
+    payload_off: 'False'
+    payload_on: 'True'
+    qos: 0.0
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_c14b50096c2f41a1af58de91d678b67d
+    value_template: '{{ value_json.static.state }}'
 

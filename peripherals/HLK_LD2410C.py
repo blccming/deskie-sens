@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from aio_ld2410 import LD2410
+from aio_ld2410 import LD2410, TargetStatus
 
 
 class HLK_LD2410C:
@@ -21,15 +21,17 @@ class HLK_LD2410C:
             rep = await device.get_next_report()
             rep = rep.basic
 
-            report["state"] = rep.target_status  # figure out the output
+            report["state"] = rep.target_status
             report["detection_distance"] = rep.detection_distance
 
             report["moving"] = {
+                "state": bool(rep.target_status & TargetStatus.MOVING),
                 "distance": rep.moving_distance,
                 "energy": rep.moving_energy,
             }
 
             report["static"] = {
+                "state": bool(rep.target_status & TargetStatus.STATIC),
                 "distance": rep.static_distance,
                 "energy": rep.static_energy,
             }
