@@ -34,6 +34,6 @@ class HLK_LD2410C:
                 "energy": rep.static_energy,
             }
 
-            report["last_update"] = datetime.now().isoformat()
+            report["last_updated"] = datetime.now().isoformat()
 
         return json.dumps(report, indent=4)

@@ -1,5 +1,13 @@
 ## TODO
 
+General
+- add graceful shutdown / termination of all threads
+- add handling of timeouts, errors -> self repair
+- investigate i2c timeouts (might have to do with zed development server)
+
+SI1145
+- configure sensitivity
+
 MQTT
 - use MQTT for config -> initiating sensor reset etc.
 
@@ -8,10 +16,6 @@ Logging
 
 Docker
 - add docker deployment option
-
-SI1145 and SCD40
-- initial test implementation
-- evaluate sensor
 
 Waveshare Pico-8SEG-LED
 - initial test implementation

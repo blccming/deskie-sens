@@ -1,0 +1,170 @@
+# make sure you have the mqtt extension enabled and setup
+mqtt:
+# air sensor
+- sensor:
+    device:
+      identifiers:
+      - 01KFTPCZW472BF5C2Z3Y4WFD8J
+      model: Deskie-Sens
+      name: Air properties
+    device_class: humidity
+    name: Humidity
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/air
+    unique_id: 01KFTPCZW472BF5C2Z3Y4WFD8J_f2fa0f2fe948408b89189fa7405fce5b
+    unit_of_measurement: '%'
+    value_template: '{{ value_json[''humidity_%''] }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTPCZW472BF5C2Z3Y4WFD8J
+      model: Deskie-Sens
+      name: Air properties
+    device_class: carbon_dioxide
+    name: CO2 concentration
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/air
+    unique_id: 01KFTPCZW472BF5C2Z3Y4WFD8J_2dd82f69b75a4fc790b69cde9dc32476
+    unit_of_measurement: ppm
+    value_template: '{{ value_json.co2_ppm }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTPCZW472BF5C2Z3Y4WFD8J
+      model: Deskie-Sens
+      name: Air properties
+    device_class: temperature
+    name: Temperature
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/air
+    unique_id: 01KFTPCZW472BF5C2Z3Y4WFD8J_afb2dc3ec8224106802bef24d0502dfb
+    unit_of_measurement: "\xB0C"
+    value_template: '{{ value_json.temperature_C }}'
+# light sensor
+- sensor:
+    device:
+      identifiers:
+      - 01KFTPZH19SM48P03B7AEWPAM4
+      model: Deskie-Sens
+      name: Light
+    device_class: illuminance
+    name: Visible light
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/light
+    unique_id: 01KFTPZH19SM48P03B7AEWPAM4_8fbec04c686549a981223020579c2928
+    unit_of_measurement: lx
+    value_template: '{{ value_json.visible }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTPZH19SM48P03B7AEWPAM4
+      model: Deskie-Sens
+      name: Light
+    device_class: illuminance
+    name: Infrared light
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/light
+    unique_id: 01KFTPZH19SM48P03B7AEWPAM4_d13e1bd2e76f4dfe95ecb7ec9234ab84
+    unit_of_measurement: lx
+    value_template: '{{ value_json.infrared }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTPZH19SM48P03B7AEWPAM4
+      model: Deskie-Sens
+      name: Light
+    name: UV index
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/light
+    unique_id: 01KFTPZH19SM48P03B7AEWPAM4_84d1d7bc60f14930b60f0ef9e2b8eba3
+    value_template: '{{ value_json.uv_index }}'
+# presence sensor
+- sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    name: Presence state
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_f90cca3c152c4a8893b5fe9a03dd0a43
+    value_template: '{{ value_json.state }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    device_class: distance
+    name: Detection distance
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_80fc516e904f47c5a0349a42d8bd5fe1
+    unit_of_measurement: cm
+    value_template: '{{ value_json.detection_distance }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    device_class: distance
+    entity_category: diagnostic
+    name: Moving distance
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_035da560bbcd491d87911d92c1c8ea4c
+    unit_of_measurement: cm
+    value_template: '{{ value_json.moving.distance }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    device_class: distance
+    entity_category: diagnostic
+    name: Static distance
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_b7160241c3bf4a44a3c8d3b03eb5b547
+    unit_of_measurement: cm
+    value_template: '{{ value_json.static.distance }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    entity_category: diagnostic
+    name: Moving energy
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_e63e20b87a0a45c38a867698251ce4a4
+    value_template: '{{ value_json.moving.energy }}'
+- sensor:
+    device:
+      identifiers:
+      - 01KFTQ6W1XQ4B36PYAKHS4KSP6
+      model: Deskie-Sens
+      name: Presence
+    entity_category: diagnostic
+    name: Static energy
+    qos: 0.0
+    state_class: measurement
+    state_topic: deskie-sens/presence
+    unique_id: 01KFTQ6W1XQ4B36PYAKHS4KSP6_b4428ac616124cda89586b0aff852807
+    value_template: '{{ value_json.static.energy }}'
+
