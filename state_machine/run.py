@@ -17,17 +17,17 @@ class StateMachine:
         while True:
             presence_json = await self.__presence.get_json_report()
             self.__mqtt.publish("/presence", presence_json)
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.1)
 
     async def _i2c_loop(self) -> None:
         while True:
             air_json = await self.__air.get_json_report()
             self.__mqtt.publish("/air", air_json)
-            await asyncio.sleep(0.05)
+            await asyncio.sleep(2.0)
 
             light_json = await self.__light.get_json_report()
             self.__mqtt.publish("/light", light_json)
-            await asyncio.sleep(0.05)
+            await asyncio.sleep(2.0)
 
     async def run(self):
         # await self.__presence.configure()

@@ -1,3 +1,4 @@
+import asyncio
 import json
 from datetime import datetime
 
@@ -11,8 +12,8 @@ class SI1145:
         self.si = adafruit_si1145.SI1145(self.i2c)
 
     async def get_json_report(self) -> str:
-        vis, ir = self.si.als
-        uv = self.si.uv_index
+        vis, ir = await asyncio.to_thread(lambda: self.si.als)
+        uv = await asyncio.to_thread(lambda: self.si.uv_index)
 
         report = {
             "visible": vis,
